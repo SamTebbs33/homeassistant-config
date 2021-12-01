@@ -1,0 +1,18 @@
+# Default to ignoring everything
+*
+
+# Don't ignore these
+!*.yaml
+!.gitignore
+!*.md
+!blueprints
+!blueprints/*
+!blueprints/automation/*
+!blueprints/automation/homeassistant/*
+!blueprints/script/*
+!blueprints/script/homeassistant/*
+
+# Explicitly ignore these
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml

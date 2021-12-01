@@ -1,0 +1,32 @@
+- id: '1637921801125'
+  name: Night mode
+  entities:
+    light.living_room_lights:
+      min_mireds: 153
+      max_mireds: 526
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - hs
+      entity_id:
+      - light.living_room_3
+      - light.living_room_2
+      - light.living_room_1
+      friendly_name: Living room lights
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'off'
+    light.hallway:
+      min_mireds: 153
+      max_mireds: 526
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - hs
+      off_brightness:
+      friendly_name: Hallway light
+      supported_features: 63
+      state: 'off'
+  icon: mdi:weather-night

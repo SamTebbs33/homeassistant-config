@@ -1,0 +1,32 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+discovery:
+
+switch:
+  - platform: flux
+    lights:
+      - light.living_room_lights
+      - light.office
+
+light:
+  - platform: group
+    name: Living room lights
+    entities:
+      - light.living_room_2
+      - light.living_room_1
+
+ecovacs:
+  username: !secret ecovacs_username
+  password: !secret ecovacs_password
+  country: !secret ecovacs_country
+  continent: !secret ecovacs_continent

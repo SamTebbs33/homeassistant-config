@@ -1,0 +1,271 @@
+- id: '1625223546305'
+  alias: Stream camera to TV when motion is detected
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: b3425071b16708afa34a60fa3fae45b2
+    entity_id: binary_sensor.utility_room_camera_motion
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: camera.play_stream
+    data:
+      media_player: media_player.living_room_tv
+    target:
+      area_id: utility_room
+      device_id: b3425071b16708afa34a60fa3fae45b2
+      entity_id: camera.utility_room_camera_hd
+  mode: single
+- id: '1625349045708'
+  alias: Start sbm2mqtt on boot
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: shell_command.start_sbm2mqtt
+- id: '1637512236361'
+  alias: Doorbell motion
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: fadf699286f2acde3f908ddd912d15a4
+    entity_id: binary_sensor.doorbell_motion
+    domain: binary_sensor
+  condition:
+  - type: is_not_open
+    condition: device
+    device_id: 50dd3a079803fdbf9cc02a40d3535bfd
+    entity_id: binary_sensor.front_door_ias_zone
+    domain: binary_sensor
+  action:
+  - device_id: b2bd1c36420bd08fd6d74dc89ee6d882
+    domain: mobile_app
+    type: notify
+    title: Motion!
+    message: Motion at the front door
+  mode: single
+- id: '1637528319451'
+  alias: First floor landing motion
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 41fcce17ced84941794c4d1b6fe29944
+    entity_id: binary_sensor.first_floor_landing_motion_sensor_ias_zone
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+    - condition: sun
+      before: sunrise
+  action:
+  - type: turn_on
+    device_id: adf49dc59ccbe8f52d1e5212ddeb7c67
+    entity_id: light.first_floor_landing
+    domain: light
+    brightness_pct: 50
+  mode: single
+- id: '1637795780254'
+  alias: Utility room motion
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: b3425071b16708afa34a60fa3fae45b2
+    entity_id: binary_sensor.utility_room_camera_motion
+    domain: binary_sensor
+  condition:
+  - condition: device
+    type: is_off
+    device_id: c00856b7fd8d7d2083eacfcc5ef7c65e
+    entity_id: switch.home_occupied
+    domain: switch
+  action:
+  - device_id: b2bd1c36420bd08fd6d74dc89ee6d882
+    domain: mobile_app
+    type: notify
+    title: Motion
+    message: Motion in the utility room
+  mode: single
+- id: '1637861920966'
+  alias: Hallway no motion
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: bc771174774c3944817716ad44b5fbf5
+    entity_id: binary_sensor.hallway_motion_sensor_ias_zone
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+    - condition: sun
+      after: sunset
+  action:
+  - type: turn_off
+    device_id: 95673257d22428dcff511991894d9ec3
+    entity_id: light.hallway
+    domain: light
+  mode: single
+- id: '1637941711904'
+  alias: Tag Toggle office light is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: cf1b2227-8b0b-4452-947a-aa3d9457349c
+  condition: []
+  action:
+  - type: toggle
+    device_id: 4e0c040559541c6028fd8f136533af64
+    entity_id: light.office
+    domain: light
+  mode: single
+- id: '1638012889108'
+  alias: Pause TV on doorbell
+  description: ''
+  trigger:
+  - type: occupied
+    platform: device
+    device_id: fadf699286f2acde3f908ddd912d15a4
+    entity_id: binary_sensor.front_door_ding
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: media_player.media_pause
+    target:
+      area_id: living_room
+      device_id: 2011e4a584022cdb07e50331be5c804c
+      entity_id: media_player.living_room_tv
+  mode: single
+- id: '1638022677865'
+  alias: Toggle bathroom light on door
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 75160a9c6ad03e30b2a880c835b8ce87
+    entity_id: binary_sensor.bathroom_door_ias_zone
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+    - condition: sun
+      after: sunset
+  action:
+  - type: toggle
+    device_id: eca79d9063ef5334677a5b7bc1bc7462
+    entity_id: light.bathroom
+    domain: light
+  mode: single
+- id: '1638120594293'
+  alias: First floor landing no motion
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: 41fcce17ced84941794c4d1b6fe29944
+    entity_id: binary_sensor.first_floor_landing_motion_sensor_ias_zone
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+    - condition: sun
+      after: sunset
+  action:
+  - type: turn_off
+    device_id: adf49dc59ccbe8f52d1e5212ddeb7c67
+    entity_id: light.first_floor_landing
+    domain: light
+  mode: single
+- id: '1638126598008'
+  alias: Hallway motion
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: bc771174774c3944817716ad44b5fbf5
+    entity_id: binary_sensor.hallway_motion_sensor_ias_zone
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+    - condition: sun
+      after: sunset
+  action:
+  - type: turn_on
+    device_id: 95673257d22428dcff511991894d9ec3
+    entity_id: light.hallway
+    domain: light
+    brightness_pct: 50
+  mode: single
+- id: '1638212801392'
+  alias: Notification on motion
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.motion_sensors
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: device
+    type: is_off
+    device_id: c00856b7fd8d7d2083eacfcc5ef7c65e
+    entity_id: switch.home_occupied
+    domain: switch
+  action:
+  - device_id: b2bd1c36420bd08fd6d74dc89ee6d882
+    domain: mobile_app
+    type: notify
+    message: Motion was detected inside.
+    title: Motion
+  mode: single
+- id: '1638221332014'
+  alias: Living room light button
+  description: ''
+  trigger:
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_ieee: 00:12:4b:00:23:97:1d:4c
+  condition: []
+  action:
+  - device_id: b2bd1c36420bd08fd6d74dc89ee6d882
+    domain: mobile_app
+    type: notify
+    message: button
+    title: button!
+  mode: single
+- id: '1638228796752'
+  alias: Start vacuum
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_off
+    device_id: c00856b7fd8d7d2083eacfcc5ef7c65e
+    entity_id: switch.home_occupied
+    domain: switch
+  - platform: time
+    at: '12:00'
+  condition:
+  - condition: state
+    entity_id: vacuum.n97s
+    state: 'off'
+  action:
+  - service: vacuum.turn_on
+    target:
+      entity_id: vacuum.n97s
+  mode: single
