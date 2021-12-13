@@ -17,11 +17,16 @@ switch:
     lights:
       - light.living_room_lights
       - light.office
+    start_time: "15:00"
+    start_colortemp: "5000"
+    stop_colortemp: "3000"
+    sunset_colortemp: "4500"
 
 light:
   - platform: group
     name: Living room lights
     entities:
+      - light.living_room_3
       - light.living_room_2
       - light.living_room_1
 
@@ -30,3 +35,45 @@ ecovacs:
   password: !secret ecovacs_password
   country: !secret ecovacs_country
   continent: !secret ecovacs_continent
+
+webostv:
+  host: 192.168.68.114
+
+browser_mod:
+  devices:
+    2dc548bb_f9947ee0:
+      name: dashboard
+    d018fd5f_c67cef94:
+      name: laptop
+
+timer:
+  washing:
+
+binary_sensor:
+  - platform: template
+    sensors:
+      temp_below_target:
+        friendly_name: Thermostat temperature is below target
+        entity_id: binary_sensor.temp_below_target
+        value_template: "{{ states('climate.living_room_thermostat.temperature') < states('climate.living_room_thermostat.current_temperature') }}"
+
+# The actual alarm state is an input_select and is only armed after the front door is closed
+# This alarm acts as the frontend and tells us that we should arm the real alarm when the front door is closed
+alarm_control_panel:
+  - platform: manual
+    name: Alarm frontend
+    code: !secret alarm_code
+    code_arm_required: false # Don't need code to arm.
+    disarm_after_trigger: false # Leave alarm armed after triggering.
+    arming_time: 0 # Time to leave the house after arming.
+    delay_time: 60 # Time to turn off after entering the house.
+    trigger_time: 600 # How long the alarm goes off for.
+    disarmed:
+      trigger_time: 0 # Can't be triggered when disarmed.
+
+notify:
+  - name: Phones
+    platform: group
+    services:
+      - service: mobile_app_bianca_s_iphone
+      - service: mobile_app_oneplus_a6013

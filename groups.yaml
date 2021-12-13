@@ -4,3 +4,8 @@ motion_sensors:
     - binary_sensor.first_floor_landing_motion_sensor_ias_zone
     - binary_sensor.hallway_motion_sensor_ias_zone
     - binary_sensor.second_floor_landing_motion_sensor_ias_zone
+
+residents:
+  entities:
+    - person.sam_tebbs
+    - person.bianca
